@@ -19,13 +19,14 @@ export const paymentSchema = z.object({
 
     participants: z.array(z.uuid()).min(1, "At least one participant is required"),
 
-    splitType: z.enum(["equal", "custom"]).default("equal"),
+    splitType: z.enum(["equal", "custom"]).default("equal").optional(),
     customSplits: z.array(paymentParticipantShareSchema).optional(),
 });
 
 export const storySchema = z.object({
     title: z.string().min(1, "Title is required"),
     description: z.string().optional(),
+
     members: z.array(memberSchema),
-    payments: z.array(paymentSchema).default([]),
+    payments: z.array(paymentSchema).default([]).optional(),
 });
