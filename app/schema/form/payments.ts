@@ -11,12 +11,12 @@ export const memberSchema = z.object({
 });
 
 export const paymentSchema = z.object({
-    payer: memberSchema,
-
+    paymentId: z.uuid(),
     amount: z.number().min(0.01, "Amount must be at least 0.01"),
     description: z.string().min(1, "Description is required"),
     date: z.string().optional(),
-
+    
+    payer: memberSchema,
     participants: z.array(z.uuid()).min(1, "At least one participant is required"),
 
     splitType: z.enum(["equal", "custom"]).default("equal").optional(),
@@ -24,6 +24,7 @@ export const paymentSchema = z.object({
 });
 
 export const storySchema = z.object({
+    storyId: z.uuid(),
     title: z.string().min(1, "Title is required"),
     description: z.string().optional(),
 
