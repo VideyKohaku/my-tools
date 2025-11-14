@@ -1,33 +1,35 @@
-import {z} from "zod";
+import { z } from 'zod';
 
 export const paymentParticipantShareSchema = z.object({
-  memberId: z.uuid(),
-  amount: z.number().positive("Share must be > 0"),
+  memberId: z.uuid().optional(),
+  amount: z.number().positive('Share must be > 0'),
 });
 
 export const memberSchema = z.object({
-    name: z.string().min(1, "Name is required"),
-    id: z.uuid()
+  name: z.string().min(1, 'Name is required'),
+  memberId: z.uuid(),
 });
 
 export const paymentSchema = z.object({
-    paymentId: z.uuid(),
-    amount: z.number().min(0.01, "Amount must be at least 0.01"),
-    description: z.string().min(1, "Description is required"),
-    date: z.string().optional(),
-    
-    payer: memberSchema,
-    participants: z.array(z.uuid()).min(1, "At least one participant is required"),
+  paymentId: z.uuid().optional(),
+  amount: z.number().min(0.01, 'Amount must be at least 0.01'),
+  description: z.string().min(1, 'Description is required'),
+  date: z.string().optional(),
 
-    splitType: z.enum(["equal", "custom"]).default("equal").optional(),
-    customSplits: z.array(paymentParticipantShareSchema).optional(),
+  payer: memberSchema,
+  participants: z
+    .array(z.uuid())
+    .min(1, 'At least one participant is required'),
+
+  splitType: z.enum(['equal', 'custom']).default('equal').optional(),
+  customSplits: z.array(paymentParticipantShareSchema).optional(),
 });
 
 export const storySchema = z.object({
-    storyId: z.uuid(),
-    title: z.string().min(1, "Title is required"),
-    description: z.string().optional(),
+  storyId: z.uuid().optional(),
+  title: z.string().min(1, 'Title is required'),
+  description: z.string().optional(),
 
-    members: z.array(memberSchema),
-    payments: z.array(paymentSchema).default([]).optional(),
+  members: z.array(memberSchema),
+  payments: z.array(paymentSchema).default([]).optional(),
 });

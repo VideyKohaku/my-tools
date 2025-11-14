@@ -72,7 +72,7 @@ const reducer = (stories: Story[], action: StoryAction): Story[] => {
           return {
             ...story,
             members: story.members.filter(
-              (member) => member.id !== action.payload.member.id,
+              (member) => member.memberId !== action.payload.member.memberId,
             ),
           };
         }
