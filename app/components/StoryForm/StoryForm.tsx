@@ -15,6 +15,11 @@ interface IStoryForm {
   titleRef?: React.RefObject<HTMLLabelElement>;
 }
 
+const mockMember = {
+  name: 'Sora',
+  memberId: uuid(),
+};
+
 export const StoryForm: React.FC<IStoryForm> = ({ titleRef }) => {
   const { dispatch } = useStoryDataContext();
   const { control: formControl, handleSubmit } = useForm<Story>({
@@ -24,7 +29,7 @@ export const StoryForm: React.FC<IStoryForm> = ({ titleRef }) => {
     defaultValues: {
       title: '',
       description: 'This bill was created for ...',
-      members: [],
+      members: [mockMember],
       payments: [],
     },
   });
@@ -40,7 +45,11 @@ export const StoryForm: React.FC<IStoryForm> = ({ titleRef }) => {
   };
 
   return (
-    <Card>
+    <Card
+      className="
+      flex flex-col gap-4 w-full p-6
+    "
+    >
       <form
         onSubmit={handleSubmit(onSubmit, (e) => {
           console.log('Errors:', e);
@@ -51,19 +60,42 @@ export const StoryForm: React.FC<IStoryForm> = ({ titleRef }) => {
           name="title"
           control={formControl}
           render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
+            <Field>
               <FieldLabel htmlFor="story-title" ref={titleRef}>
                 Bill Title
               </FieldLabel>
               <Input
                 {...field}
                 id="story-title"
-                aria-invalid={fieldState.invalid}
-                placeholder="My story title ... E.g., Đi Đà Lạt"
+                placeholder="My bill title (E.g., Đi Đà Lạt)"
+                data-invalid={fieldState.invalid}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
+        />
+        <SpacerMd />
+        <Controller
+          name="description"
+          control={formControl}
+          render={({ field, fieldState }) => {
+            return (
+              <Field>
+                <FieldLabel htmlFor="story-description">
+                  Bill Description
+                </FieldLabel>
+                <Input
+                  {...field}
+                  id="story-description"
+                  placeholder="Description for the bill"
+                  data-invalid={fieldState.invalid}
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            );
+          }}
         />
         <SpacerMd />
         <Field>

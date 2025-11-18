@@ -1,20 +1,24 @@
-import { Button} from "@/components/ui/button";
-import {useForm} from "react-hook-form";
-import z from "zod";
-
-const storySchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  description: z.string().optional(),
-  members: z.array(z.string()),
-})
+'use client';
+import React from 'react';
+import { StoryForm, OpenFormButton } from '@components/index';
 
 export default function Home() {
-  const { register, handleSubmit } = useForm();
+  const titleRef = React.useRef<HTMLLabelElement>(null);
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Button>Click Me</Button>
-        
+      <main
+        className="
+        flex flex-col items-stretch justify-between
+        w-full max-w-3xl min-w-[320px] min-h-screen
+        mx-auto
+        px-4 py-8
+        md:basis-2/3 md:px-16 md:py-32
+        bg-white dark:bg-black"
+      >
+        <OpenFormButton focusRef={titleRef} buttonLabel="Add New Bill">
+          <StoryForm />
+        </OpenFormButton>
       </main>
     </div>
   );

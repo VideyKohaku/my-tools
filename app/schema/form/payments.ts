@@ -27,8 +27,14 @@ export const paymentSchema = z.object({
 
 export const storySchema = z.object({
   storyId: z.uuid().optional(),
-  title: z.string().min(1, 'Title is required'),
-  description: z.string().optional(),
+  title: z
+    .string()
+    .min(1, 'Title is required')
+    .max(50, 'Title should be at most 50 characters'),
+  description: z
+    .string()
+    .max(100, 'Description should be at most 100 characters')
+    .optional(),
 
   members: z.array(memberSchema),
   payments: z.array(paymentSchema).default([]).optional(),
